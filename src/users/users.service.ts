@@ -1,5 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/dto/create.user.dto';
+import { UpdatePasswordDto } from 'src/dto/update.password.dto';
 import { User } from 'src/dto/user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { omit } from './../helper';
@@ -23,10 +29,9 @@ export class UsersService {
   }
 
   public findOne(id: string): User {
-    // if (id)
     const user: User = this.users.find((user) => user.id === id);
     if (!user) {
-      throw new NotFoundException();
+      throw new NotFoundException(`user with id ${id} doesn't exist`);
     }
     return omit(user, 'password');
   }
@@ -40,9 +45,30 @@ export class UsersService {
       createdAt: Date.now(),
       updatedAt: null,
     };
-    console.log(omit(user, 'password'));
     this.users.push(user);
     return omit(user, 'password');
+  }
+
+  public update(id: string, newUserData: UpdatePasswordDto) {
+    const user: User = this.users.find((user) => user.id === id);
+    if (!user) {
+      throw new NotFoundException(`user with id ${id} doesn't exist`);
+    }
+    const userIndex = this.users.findIndex((user) => user.id === id);
+    if (newUserData.oldPassowrd === user.password) {
+      (this.users[userIndex].password = newUserData.newPassword),
+        ++this.users[userIndex].version;
+      this.users[userIndex].updatedAt = Date.now();
+    } else {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: "user old password doesn't valid",
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    return omit(this.users[userIndex], 'password');
   }
 
   public delete(id: string): void {
