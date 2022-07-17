@@ -17,7 +17,6 @@ export class TracksService {
   ];
 
   public async findAll(): Promise<Array<Track>> {
-    // console.log('track');
     return await this.tracks;
   }
 
@@ -37,14 +36,11 @@ export class TracksService {
       albumId: newTrack.albumId,
       duration: newTrack.duration,
     };
-    // console.log('create track:', trackData);
     await this.tracks.push(trackData);
-    // console.log('all tracks after push', this.tracks);
     return trackData;
   }
 
   public async update(id: string, newTrackData: UpdateTrackDto) {
-    // console.log('newTrackData: ', newTrackData);
     const track: Track = await this.tracks.find((track) => track.id === id);
     if (!track) {
       throw new NotFoundException(`Track with id ${id} doesn't exist`);
@@ -63,7 +59,6 @@ export class TracksService {
     newTrackData.hasOwnProperty('duration')
       ? (this.tracks[trackIndex].duration = newTrackData.duration)
       : null;
-    // console.log('tracks: ', this.tracks);
     return track;
   }
 
@@ -79,20 +74,12 @@ export class TracksService {
 
   public async setNullArtistId(id: string): Promise<void> {
     await this.tracks.forEach((track) => {
-      console.log(track);
-      console.log(track.artistId === id);
       track.artistId === id ? (track.artistId = null) : null;
-      console.log(track.artistId);
     });
-    // console.log(this.tracks);
   }
   public async setNullAlbumId(id: string): Promise<void> {
     await this.tracks.forEach((track) => {
-      console.log(track);
-      console.log(track.albumId === id);
       track.albumId === id ? (track.albumId = null) : null;
-      console.log(track.albumId);
     });
-    // console.log(this.tracks);
   }
 }

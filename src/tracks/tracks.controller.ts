@@ -26,7 +26,6 @@ export class TracksController {
   @Get()
   @HttpCode(200)
   public async findAll(): Promise<Array<Track>> {
-    // console.log('track');
     return await this.tracksService.findAll();
   }
 
@@ -39,9 +38,8 @@ export class TracksController {
   }
 
   @Post()
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(201)
   public async create(@Body() newTrack: CreateTrackDto) {
-    // console.log('status: ', response.statusText);
     return await this.tracksService.create(newTrack);
   }
 

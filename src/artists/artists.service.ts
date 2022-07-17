@@ -15,7 +15,6 @@ export class ArtistsService {
   ];
 
   public async findAll(): Promise<Array<Artist>> {
-    // console.log('artist');
     return await this.artists;
   }
 
@@ -38,9 +37,6 @@ export class ArtistsService {
   }
 
   public async update(id: string, newArtistData: UpdateArtistDto) {
-    // console.log('artists:', this.artists);
-    // console.log('newArtistId: ', id);
-    // console.log('newArtistData: ', newArtistData);
     const artist: Artist = await this.artists.find(
       (artist) => artist.id === id,
     );
@@ -58,7 +54,6 @@ export class ArtistsService {
       ? (this.artists[artistIndex].grammy = newArtistData.grammy)
       : null;
 
-    // console.log('new artist:', this.artists[artistIndex]);
     return await this.artists[artistIndex];
   }
 

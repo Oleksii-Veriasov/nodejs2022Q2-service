@@ -28,7 +28,6 @@ export class AlbumsController {
   @Get()
   @HttpCode(200)
   public async findAll(): Promise<Array<Album>> {
-    // console.log('album');
     return await this.albumsService.findAll();
   }
 
@@ -44,8 +43,6 @@ export class AlbumsController {
   @HttpCode(HttpStatus.CREATED)
   public async create(@Body() newAlbum: CreateAlbumDto) {
     const albumNew = await this.albumsService.create(newAlbum);
-    console.log('Create controller album', albumNew);
-    console.log();
     return albumNew;
   }
 

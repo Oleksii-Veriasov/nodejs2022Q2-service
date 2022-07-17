@@ -24,7 +24,6 @@ export class UsersService {
   ];
 
   public async findAll(): Promise<Array<User>> {
-    console.log('uses');
     return await this.users.map((user) => omit(user, 'password'));
   }
 
@@ -51,9 +50,6 @@ export class UsersService {
 
   public async update(id: string, newUserData: UpdatePasswordDto) {
     let user: User;
-    // console.log('users:', this.users);
-    // console.log('id:', id);
-    // console.log('userData: ', newUserData);
     try {
       user = await this.users.find((user) => user.id === id);
     } catch {

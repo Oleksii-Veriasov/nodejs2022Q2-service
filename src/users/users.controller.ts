@@ -22,7 +22,6 @@ export class UsersController {
   @Get()
   @HttpCode(200)
   public async findAll(): Promise<Array<User>> {
-    console.log('uses');
     return await this.usersService.findAll();
   }
 
@@ -51,7 +50,6 @@ export class UsersController {
   @Put(':id')
   @HttpCode(200)
   public async update(
-    // @Param('id') id: string,
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() newUserData: UpdatePasswordDto,
   ) {

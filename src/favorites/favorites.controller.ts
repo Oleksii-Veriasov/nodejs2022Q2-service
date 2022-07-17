@@ -26,7 +26,6 @@ export class FavoritesController {
   @Get()
   @HttpCode(200)
   public async findAll(): Promise<Favorite> {
-    console.log('favorite');
     return await this.favoritesService.findAll();
   }
 

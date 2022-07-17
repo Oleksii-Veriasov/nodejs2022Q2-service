@@ -29,7 +29,6 @@ export class ArtistsController {
   @Get()
   @HttpCode(200)
   public async findAll(): Promise<Array<Artist>> {
-    // console.log('artist');
     return await this.artistsService.findAll();
   }
 
@@ -53,15 +52,10 @@ export class ArtistsController {
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<void> {
     try {
-      console.log('delate artist', id);
-      // console.log('favorites');
-      // await this.favoritesService.deleteOneArtist(id);
-      console.log('tracks');
+      await this.favoritesService.deleteOneArtist(id);
       await this.tracksService.setNullArtistId(id);
-      await this.tracksService.setNullAlbumId(id);
-      // console.log(this.tracksService.tracks);
+      // await this.tracksService.setNullAlbumId(id);
       await this.albumsService.setNullArtistId(id);
-      // console.log(this.albumsService.albums);
     } catch {
       (ex) => console.log(ex);
     }

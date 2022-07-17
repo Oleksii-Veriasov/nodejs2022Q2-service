@@ -16,7 +16,6 @@ export class AlbumsService {
   ];
 
   public async findAll(): Promise<Array<Album>> {
-    // console.log('album');
     return await this.albums;
   }
 
@@ -35,9 +34,7 @@ export class AlbumsService {
       year: newAlbum.year,
       artistId: newAlbum.artistId,
     };
-    // console.log('Create', album);
     await this.albums.push(album);
-    // console.log('Create', this.albums);
     return album;
   }
 
@@ -45,10 +42,7 @@ export class AlbumsService {
     id: string,
     newAlbumData: UpdateAlbumDto,
   ): Promise<Album> {
-    // console.log('Update', newAlbumData);
-    // console.log('Update', id);
     const album: Album = await this.albums.find((album) => album.id === id);
-    // console.log('Update', this.albums);
     if (!album) {
       throw new NotFoundException(`Album with id ${id} doesn't exist`);
     }
@@ -63,7 +57,6 @@ export class AlbumsService {
     (await newAlbumData).artistId
       ? (this.albums[albumIndex].artistId = (await newAlbumData).artistId)
       : null;
-    // console.log('After update', await this.albums[albumIndex]);
     return await this.albums[albumIndex];
   }
 
@@ -81,6 +74,5 @@ export class AlbumsService {
     await this.albums.forEach((album) => {
       album.artistId === id ? (album.artistId = null) : null;
     });
-    // console.log(this.albums);
   }
 }
