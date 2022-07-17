@@ -3,7 +3,7 @@ import { Favorite } from 'src/dto/favorite.dto';
 
 @Injectable()
 export class FavoritesService {
-  private favorites: Favorite = {
+  public favorites: Favorite = {
     // {
     artists: [
       //     {

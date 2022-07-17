@@ -59,8 +59,9 @@ export class ArtistsController {
       console.log('tracks');
       await this.tracksService.setNullArtistId(id);
       await this.tracksService.setNullAlbumId(id);
-      console.log('albums');
+      // console.log(this.tracksService.tracks);
       await this.albumsService.setNullArtistId(id);
+      // console.log(this.albumsService.albums);
     } catch {
       (ex) => console.log(ex);
     }

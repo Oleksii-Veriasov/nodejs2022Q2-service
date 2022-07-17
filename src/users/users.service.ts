@@ -12,7 +12,7 @@ import { omit } from './../helper';
 
 @Injectable()
 export class UsersService {
-  private users: Array<User> = [
+  public users: Array<User> = [
     {
       id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       login: 'MyUser',

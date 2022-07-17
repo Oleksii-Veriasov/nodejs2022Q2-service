@@ -6,11 +6,11 @@ import { UpdateTrackDto } from 'src/dto/update.track.dto';
 
 @Injectable()
 export class TracksService {
-  private tracks: Array<Track> = [
+  public tracks: Array<Track> = [
     {
       id: '8f725175-4068-49e1-b290-709b92ac3623',
       name: 'The Show Must Go On',
-      artistId: '3fa85f64-5717-4562-b3fc-2c963f66afa0',
+      artistId: 'c5392895-6b34-49d1-a4e0-7e7d528effe7',
       albumId: '3fa85f64-5717-4562-b3fc-2c963f66afa2',
       duration: 262,
     },
@@ -79,7 +79,8 @@ export class TracksService {
 
   public async setNullArtistId(id: string): Promise<void> {
     await this.tracks.forEach((track) => {
-      // console.log(`${entity}:`, track[entity]);
+      console.log(track);
+      console.log(track.artistId === id);
       track.artistId === id ? (track.artistId = null) : null;
       console.log(track.artistId);
     });
@@ -87,7 +88,8 @@ export class TracksService {
   }
   public async setNullAlbumId(id: string): Promise<void> {
     await this.tracks.forEach((track) => {
-      // console.log(`${entity}:`, track[entity]);
+      console.log(track);
+      console.log(track.albumId === id);
       track.albumId === id ? (track.albumId = null) : null;
       console.log(track.albumId);
     });

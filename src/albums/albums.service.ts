@@ -1,9 +1,4 @@
-import {
-  //   HttpException,
-  //   HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Album } from 'src/dto/album.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UpdateAlbumDto } from 'src/dto/update.album.dto';
@@ -11,7 +6,7 @@ import { CreateAlbumDto } from 'src/dto/create.album.dto';
 
 @Injectable()
 export class AlbumsService {
-  private albums: Array<Album> = [
+  public albums: Array<Album> = [
     {
       id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       name: 'Innuendo',

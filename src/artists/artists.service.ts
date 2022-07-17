@@ -6,7 +6,7 @@ import { CreateArtistDto } from 'src/dto/create.artist.dto';
 
 @Injectable()
 export class ArtistsService {
-  private artists: Array<Artist> = [
+  public artists: Array<Artist> = [
     {
       id: 'c5392895-6b34-49d1-a4e0-7e7d528effe7',
       name: 'Freddie Mercury',
