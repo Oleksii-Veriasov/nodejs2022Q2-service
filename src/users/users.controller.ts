@@ -21,37 +21,40 @@ export class UsersController {
 
   @Get()
   @HttpCode(200)
-  public findAll(): Array<User> {
+  public async findAll(): Promise<Array<User>> {
     console.log('uses');
-    return this.usersService.findAll();
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
   @HttpCode(200)
-  public findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    return this.usersService.findOne(id);
+  public async findOne(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    return await this.usersService.findOne(id);
   }
 
   @Post()
   @HttpCode(201)
-  public create(@Body() newUser: CreateUserDto) {
-    return this.usersService.create(newUser);
+  public async create(@Body() newUser: CreateUserDto) {
+    return await this.usersService.create(newUser);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  public delete(
+  public async delete(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): void {
-    this.usersService.delete(id);
+  ): Promise<void> {
+    await this.usersService.delete(id);
   }
 
   @Put(':id')
   @HttpCode(200)
-  public update(
+  public async update(
+    // @Param('id') id: string,
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() newUserData: UpdatePasswordDto,
   ) {
-    return this.usersService.update(id, newUserData);
+    return await this.usersService.update(id, newUserData);
   }
 }

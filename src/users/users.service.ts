@@ -23,42 +23,51 @@ export class UsersService {
     },
   ];
 
-  public findAll(): Array<User> {
+  public async findAll(): Promise<Array<User>> {
     console.log('uses');
-    return this.users.map((user) => omit(user, 'password'));
+    return await this.users.map((user) => omit(user, 'password'));
   }
 
-  public findOne(id: string): User {
-    const user: User = this.users.find((user) => user.id === id);
+  public async findOne(id: string): Promise<User> {
+    const user: User = await this.users.find((user) => user.id === id);
     if (!user) {
       throw new NotFoundException(`user with id ${id} doesn't exist`);
     }
     return omit(user, 'password');
   }
 
-  public create(newUser: CreateUserDto) {
+  public async create(newUser: CreateUserDto) {
     const user = {
       id: uuidv4(),
       login: newUser.login,
       password: newUser.password,
       version: 1,
-      createdAt: Date.now(),
-      updatedAt: null,
+      createdAt: +Date.now(),
+      updatedAt: +Date.now(),
     };
-    this.users.push(user);
+    await this.users.push(user);
     return omit(user, 'password');
   }
 
-  public update(id: string, newUserData: UpdatePasswordDto) {
-    const user: User = this.users.find((user) => user.id === id);
+  public async update(id: string, newUserData: UpdatePasswordDto) {
+    let user: User;
+    // console.log('users:', this.users);
+    // console.log('id:', id);
+    // console.log('userData: ', newUserData);
+    try {
+      user = await this.users.find((user) => user.id === id);
+    } catch {
+      (ex) => console.log(ex);
+    }
     if (!user) {
       throw new NotFoundException(`user with id ${id} doesn't exist`);
     }
-    const userIndex = this.users.findIndex((user) => user.id === id);
-    if (newUserData.oldPassowrd === user.password) {
+
+    const userIndex = await this.users.findIndex((user) => user.id === id);
+    if (newUserData.oldPassword === user.password) {
       (this.users[userIndex].password = newUserData.newPassword),
         ++this.users[userIndex].version;
-      this.users[userIndex].updatedAt = Date.now();
+      this.users[userIndex].updatedAt = +Date.now();
     } else {
       throw new HttpException(
         {
@@ -74,7 +83,13 @@ export class UsersService {
   public delete(id: string): void {
     const index: number = this.users.findIndex((user) => user.id === id);
     if (index === -1) {
-      throw new NotFoundException('User not found.');
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'User not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
     this.users.splice(index, 1);
   }

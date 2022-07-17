@@ -15,7 +15,6 @@ export class CreateTrackDto {
     type: String,
   })
   @IsNotEmpty()
-  @IsUUID()
   artistId: string | null;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class CreateTrackDto {
     type: String,
   })
   @IsNotEmpty()
-  @IsUUID()
   albumId: string | null;
 
   @ApiProperty({

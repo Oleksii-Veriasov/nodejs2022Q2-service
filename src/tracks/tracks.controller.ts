@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -12,46 +13,57 @@ import {
 import { Track } from 'src/dto/track.dto';
 import { CreateTrackDto } from 'src/dto/create.track.dto';
 import { UpdateTrackDto } from 'src/dto/update.track.dto';
-
 import { TracksService } from './tracks.service';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Controller('track')
 export class TracksController {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly tracksService: TracksService,
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
   @Get()
   @HttpCode(200)
-  public findAll(): Array<Track> {
-    console.log('track');
-    return this.tracksService.findAll();
+  public async findAll(): Promise<Array<Track>> {
+    // console.log('track');
+    return await this.tracksService.findAll();
   }
 
   @Get(':id')
   @HttpCode(200)
-  public findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    return this.tracksService.findOne(id);
+  public async findOne(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    return await this.tracksService.findOne(id);
   }
 
   @Post()
-  @HttpCode(201)
-  public create(@Body() newTrack: CreateTrackDto) {
-    return this.tracksService.create(newTrack);
+  @HttpCode(HttpStatus.CREATED)
+  public async create(@Body() newTrack: CreateTrackDto) {
+    // console.log('status: ', response.statusText);
+    return await this.tracksService.create(newTrack);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  public delete(
+  public async delete(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): void {
-    this.tracksService.delete(id);
+  ): Promise<void> {
+    try {
+      this.favoritesService.deleteOneTrack(id);
+    } catch {
+      (ex) => console.log(ex);
+    }
+    await this.tracksService.delete(id);
   }
 
   @Put(':id')
   @HttpCode(200)
-  public update(
+  public async update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() newTrackData: UpdateTrackDto,
   ) {
-    return this.tracksService.update(id, newTrackData);
+    return await this.tracksService.update(id, newTrackData);
   }
 }

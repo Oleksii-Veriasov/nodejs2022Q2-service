@@ -23,7 +23,6 @@ export class Track {
     type: String,
   })
   @IsNotEmpty()
-  @IsUUID()
   artistId: string | null;
 
   @ApiProperty({
@@ -31,7 +30,6 @@ export class Track {
     type: String,
   })
   @IsNotEmpty()
-  @IsUUID()
   albumId: string | null;
 
   @ApiProperty({

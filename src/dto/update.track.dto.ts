@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateTrackDto {
   @ApiProperty({
@@ -15,7 +15,6 @@ export class UpdateTrackDto {
     type: String,
   })
   @IsOptional()
-  @IsUUID()
   artistId: string | null;
 
   @ApiProperty({
@@ -23,7 +22,6 @@ export class UpdateTrackDto {
     type: String,
   })
   @IsOptional()
-  @IsUUID()
   albumId: string | null;
 
   @ApiProperty({

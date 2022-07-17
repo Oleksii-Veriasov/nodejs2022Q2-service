@@ -1,6 +1,6 @@
 import {
-  HttpException,
-  HttpStatus,
+  //   HttpException,
+  //   HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -20,55 +20,72 @@ export class AlbumsService {
     },
   ];
 
-  public findAll(): Array<Album> {
-    console.log('album');
-    return this.albums;
+  public async findAll(): Promise<Array<Album>> {
+    // console.log('album');
+    return await this.albums;
   }
 
-  public findOne(id: string): Album {
-    const album: Album = this.albums.find((album) => album.id === id);
+  public async findOne(id: string): Promise<Album> {
+    const album: Album = await this.albums.find((album) => album.id === id);
     if (!album) {
       throw new NotFoundException(`album with id ${id} doesn't exist`);
     }
     return album;
   }
 
-  public create(newAlbum: CreateAlbumDto): Album {
+  public async create(newAlbum: CreateAlbumDto): Promise<Album> {
     const album = {
       id: uuidv4(),
       name: newAlbum.name,
       year: newAlbum.year,
       artistId: newAlbum.artistId,
     };
-    this.albums.push(album);
+    // console.log('Create', album);
+    await this.albums.push(album);
+    // console.log('Create', this.albums);
     return album;
   }
 
-  public update(id: string, newAlbumData: UpdateAlbumDto) {
-    const album: Album = this.albums.find((album) => album.id === id);
+  public async update(
+    id: string,
+    newAlbumData: UpdateAlbumDto,
+  ): Promise<Album> {
+    // console.log('Update', newAlbumData);
+    // console.log('Update', id);
+    const album: Album = await this.albums.find((album) => album.id === id);
+    // console.log('Update', this.albums);
     if (!album) {
       throw new NotFoundException(`Album with id ${id} doesn't exist`);
     }
-    const albumIndex = this.albums.findIndex((album) => album.id === id);
+    const albumIndex = await this.albums.findIndex((album) => album.id === id);
 
-    newAlbumData.name
-      ? (this.albums[albumIndex].name = newAlbumData.name)
+    (await newAlbumData).name
+      ? (this.albums[albumIndex].name = (await newAlbumData).name)
       : null;
-    newAlbumData.year
-      ? (this.albums[albumIndex].year = newAlbumData.year)
+    (await newAlbumData).year
+      ? (this.albums[albumIndex].year = (await newAlbumData).year)
       : null;
-    newAlbumData.artistId
-      ? (this.albums[albumIndex].artistId = newAlbumData.artistId)
+    (await newAlbumData).artistId
+      ? (this.albums[albumIndex].artistId = (await newAlbumData).artistId)
       : null;
-
-    return album;
+    // console.log('After update', await this.albums[albumIndex]);
+    return await this.albums[albumIndex];
   }
 
-  public delete(id: string): void {
-    const index: number = this.albums.findIndex((album) => album.id === id);
+  public async delete(id: string): Promise<void> {
+    const index: number = await this.albums.findIndex(
+      (album) => album.id === id,
+    );
     if (index === -1) {
       throw new NotFoundException('Album not found.');
     }
-    this.albums.splice(index, 1);
+    await this.albums.splice(index, 1);
+  }
+
+  public async setNullArtistId(id: string): Promise<void> {
+    await this.albums.forEach((album) => {
+      album.artistId === id ? (album.artistId = null) : null;
+    });
+    // console.log(this.albums);
   }
 }

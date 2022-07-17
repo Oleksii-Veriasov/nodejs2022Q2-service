@@ -8,7 +8,7 @@ export class UpdatePasswordDto {
   })
   @IsNotEmpty()
   @IsString()
-  oldPassowrd: string;
+  oldPassword: string;
 
   @ApiProperty({
     description: 'new password',

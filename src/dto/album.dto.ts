@@ -31,6 +31,5 @@ export class Album {
     type: String,
   })
   @IsNotEmpty()
-  @IsString()
   artistId: string | null;
 }

@@ -8,15 +8,15 @@ import { CreateArtistDto } from 'src/dto/create.artist.dto';
 export class ArtistsService {
   private artists: Array<Artist> = [
     {
-      id: '3fa85f64-5717-4562-b3fc-2c963f66afa1',
+      id: 'c5392895-6b34-49d1-a4e0-7e7d528effe7',
       name: 'Freddie Mercury',
       grammy: false,
     },
   ];
 
-  public findAll(): Array<Artist> {
-    console.log('artist');
-    return this.artists;
+  public async findAll(): Promise<Array<Artist>> {
+    // console.log('artist');
+    return await this.artists;
   }
 
   public findOne(id: string): Artist {
@@ -27,38 +27,48 @@ export class ArtistsService {
     return artist;
   }
 
-  public create(newArtist: CreateArtistDto): Artist {
+  public async create(newArtist: CreateArtistDto): Promise<Artist> {
     const artist = {
       id: uuidv4(),
       name: newArtist.name,
       grammy: newArtist.grammy,
     };
-    this.artists.push(artist);
+    await this.artists.push(artist);
     return artist;
   }
 
-  public update(id: string, newArtistData: UpdateArtistDto) {
-    const artist: Artist = this.artists.find((artist) => artist.id === id);
+  public async update(id: string, newArtistData: UpdateArtistDto) {
+    // console.log('artists:', this.artists);
+    // console.log('newArtistId: ', id);
+    // console.log('newArtistData: ', newArtistData);
+    const artist: Artist = await this.artists.find(
+      (artist) => artist.id === id,
+    );
     if (!artist) {
       throw new NotFoundException(`Artist with id ${id} doesn't exist`);
     }
-    const artistIndex = this.artists.findIndex((artist) => artist.id === id);
+    const artistIndex = await this.artists.findIndex(
+      (artist) => artist.id === id,
+    );
 
-    newArtistData.name
+    newArtistData.hasOwnProperty('name')
       ? (this.artists[artistIndex].name = newArtistData.name)
       : null;
-    newArtistData.grammy
+    newArtistData.hasOwnProperty('grammy')
       ? (this.artists[artistIndex].grammy = newArtistData.grammy)
       : null;
 
-    return artist;
+    // console.log('new artist:', this.artists[artistIndex]);
+    return await this.artists[artistIndex];
   }
 
-  public delete(id: string): void {
-    const index: number = this.artists.findIndex((artist) => artist.id === id);
+  public async delete(id: string): Promise<void> {
+    const index: number = await this.artists.findIndex(
+      (artist) => artist.id === id,
+    );
     if (index === -1) {
       throw new NotFoundException('Artist not found.');
     }
-    this.artists.splice(index, 1);
+    await this.artists.splice(index, 1);
   }
 }

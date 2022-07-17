@@ -8,7 +8,7 @@ import { UpdateTrackDto } from 'src/dto/update.track.dto';
 export class TracksService {
   private tracks: Array<Track> = [
     {
-      id: '3fa85f64-5717-4562-b3fc-2c963f66afab6',
+      id: '8f725175-4068-49e1-b290-709b92ac3623',
       name: 'The Show Must Go On',
       artistId: '3fa85f64-5717-4562-b3fc-2c963f66afa0',
       albumId: '3fa85f64-5717-4562-b3fc-2c963f66afa2',
@@ -16,9 +16,9 @@ export class TracksService {
     },
   ];
 
-  public findAll(): Array<Track> {
-    console.log('track');
-    return this.tracks;
+  public async findAll(): Promise<Array<Track>> {
+    // console.log('track');
+    return await this.tracks;
   }
 
   public findOne(id: string): Track {
@@ -29,46 +29,68 @@ export class TracksService {
     return track;
   }
 
-  public create(newTrack: CreateTrackDto): Track {
-    const track = {
+  public async create(newTrack: CreateTrackDto): Promise<Track> {
+    const trackData = {
       id: uuidv4(),
       name: newTrack.name,
       artistId: newTrack.artistId,
       albumId: newTrack.albumId,
       duration: newTrack.duration,
     };
-    this.tracks.push(track);
-    return track;
+    // console.log('create track:', trackData);
+    await this.tracks.push(trackData);
+    // console.log('all tracks after push', this.tracks);
+    return trackData;
   }
 
-  public update(id: string, newTrackData: UpdateTrackDto) {
-    const track: Track = this.tracks.find((track) => track.id === id);
+  public async update(id: string, newTrackData: UpdateTrackDto) {
+    // console.log('newTrackData: ', newTrackData);
+    const track: Track = await this.tracks.find((track) => track.id === id);
     if (!track) {
       throw new NotFoundException(`Track with id ${id} doesn't exist`);
     }
-    const trackIndex = this.tracks.findIndex((track) => track.id === id);
+    const trackIndex = await this.tracks.findIndex((track) => track.id === id);
 
-    newTrackData.name
+    newTrackData.hasOwnProperty('name')
       ? (this.tracks[trackIndex].name = newTrackData.name)
       : null;
-    newTrackData.artistId
+    newTrackData.hasOwnProperty('artistId')
       ? (this.tracks[trackIndex].artistId = newTrackData.artistId)
       : null;
-    newTrackData.albumId
+    newTrackData.hasOwnProperty('albumId')
       ? (this.tracks[trackIndex].albumId = newTrackData.albumId)
       : null;
-    newTrackData.duration
+    newTrackData.hasOwnProperty('duration')
       ? (this.tracks[trackIndex].duration = newTrackData.duration)
       : null;
-
+    // console.log('tracks: ', this.tracks);
     return track;
   }
 
-  public delete(id: string): void {
-    const index: number = this.tracks.findIndex((track) => track.id === id);
+  public async delete(id: string): Promise<void> {
+    const index: number = await this.tracks.findIndex(
+      (track) => track.id === id,
+    );
     if (index === -1) {
       throw new NotFoundException('Track not found.');
     }
     this.tracks.splice(index, 1);
+  }
+
+  public async setNullArtistId(id: string): Promise<void> {
+    await this.tracks.forEach((track) => {
+      // console.log(`${entity}:`, track[entity]);
+      track.artistId === id ? (track.artistId = null) : null;
+      console.log(track.artistId);
+    });
+    // console.log(this.tracks);
+  }
+  public async setNullAlbumId(id: string): Promise<void> {
+    await this.tracks.forEach((track) => {
+      // console.log(`${entity}:`, track[entity]);
+      track.albumId === id ? (track.albumId = null) : null;
+      console.log(track.albumId);
+    });
+    // console.log(this.tracks);
   }
 }
