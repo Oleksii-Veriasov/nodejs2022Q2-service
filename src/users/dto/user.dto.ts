@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
-export class User {
+export class UserDto {
   @ApiProperty({
     description: 'uuid v4',
     type: String,

@@ -5,8 +5,8 @@ import { FavoritesService } from 'src/favorites/favorites.service';
 import { FavoritesModule } from 'src/favorites/favorites.module';
 
 @Module({
-  providers: [TracksService, FavoritesService],
+  providers: [TracksService],
   controllers: [TracksController],
-  imports: [FavoritesModule],
+  imports: [],
 })
 export class TracksModule {}

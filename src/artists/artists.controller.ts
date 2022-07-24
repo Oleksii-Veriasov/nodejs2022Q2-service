@@ -4,70 +4,71 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { AlbumsService } from 'src/albums/albums.service';
-import { Artist } from 'src/dto/artist.dto';
+import { ArtistDto } from './dto/artist.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateArtistDto } from 'src/dto/create.artist.dto';
-import { UpdateArtistDto } from 'src/dto/update.artist.dto';
+import { UpdateArtistDto } from './dto/update.artist.dto';
 import { FavoritesService } from 'src/favorites/favorites.service';
 import { TracksService } from 'src/tracks/tracks.service';
 import { ArtistsService } from './artists.service';
+import { ArtistScheme } from './schemes/artist.scheme';
 
 @Controller('artist')
 export class ArtistsController {
-  constructor(
-    private readonly artistsService: ArtistsService,
-    private readonly tracksService: TracksService,
-    private readonly albumsService: AlbumsService,
-    private readonly favoritesService: FavoritesService,
-  ) {}
+  constructor(private readonly artistsService: ArtistsService) {}
 
+  @ApiOperation({ summary: 'Get all artist' })
+  @ApiResponse({ status: HttpStatus.OK, type: [ArtistScheme] })
   @Get()
   @HttpCode(200)
-  public async findAll(): Promise<Array<Artist>> {
+  public async findAll() {
     return await this.artistsService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get one artist by Id' })
+  @ApiResponse({ status: HttpStatus.OK, type: ArtistScheme })
   @Get(':id')
   @HttpCode(200)
   public async findOne(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('artistId', new ParseUUIDPipe({ version: '4' })) artistId: string,
   ) {
-    return await this.artistsService.findOne(id);
+    return await this.artistsService.findOne(artistId);
   }
 
+  @ApiOperation({ summary: 'Create artist' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: ArtistScheme })
   @Post()
   @HttpCode(201)
   public async create(@Body() newArtist: CreateArtistDto) {
     return await this.artistsService.create(newArtist);
   }
 
-  @Delete(':id')
+  @ApiOperation({ summary: 'Delete artist by Id' })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
+  @Delete(':artistId')
   @HttpCode(204)
   public async delete(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Promise<void> {
-    try {
-      await this.favoritesService.deleteOneArtist(id);
-      await this.tracksService.setNullArtistId(id);
-      // await this.tracksService.setNullAlbumId(id);
-      await this.albumsService.setNullArtistId(id);
-    } catch {
-      (ex) => console.log(ex);
-    }
-    await this.artistsService.delete(id);
+    @Param('artistId', new ParseUUIDPipe({ version: '4' })) artistId: string,
+  ) {
+    await this.artistsService.delete(artistId);
   }
 
-  @Put(':id')
+  @ApiOperation({ summary: 'Update artist by Id' })
+  @ApiResponse({ status: HttpStatus.OK, type: ArtistScheme })
+  @Put(':artistId')
   @HttpCode(200)
   public async update(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('artistId', new ParseUUIDPipe({ version: '4' })) artistId: string,
     @Body() newArtistData: UpdateArtistDto,
   ) {
-    return await this.artistsService.update(id, newArtistData);
+    return await this.artistsService.update(artistId, newArtistData);
   }
 }

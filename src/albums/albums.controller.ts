@@ -10,56 +10,56 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { Album } from 'src/dto/album.dto';
+import { AlbumDto } from './dto/album.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateAlbumDto } from 'src/dto/create.album.dto';
-import { UpdateAlbumDto } from 'src/dto/update.album.dto';
-import { FavoritesService } from 'src/favorites/favorites.service';
-
+import { UpdateAlbumDto } from 'src/albums/dto/update.album.dto';
 import { AlbumsService } from './albums.service';
+import { AlbumScheme } from './schemes/album.scheme';
 
+@ApiTags('album')
 @Controller('album')
 export class AlbumsController {
-  tracksService: any;
-  constructor(
-    private readonly albumsService: AlbumsService,
-    private readonly favoritesService: FavoritesService,
-  ) {}
+  constructor(private readonly albumsService: AlbumsService) {}
 
+  @ApiOperation({ summary: 'Get all albums' })
+  @ApiResponse({ status: HttpStatus.OK, type: [AlbumScheme] })
   @Get()
   @HttpCode(200)
-  public async findAll(): Promise<Array<Album>> {
+  public async findAll() {
     return await this.albumsService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get one album by Id' })
+  @ApiResponse({ status: HttpStatus.OK, type: AlbumScheme })
   @Get(':id')
   @HttpCode(200)
   public async findOne(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('albumId', new ParseUUIDPipe({ version: '4' })) albumId: string,
   ) {
-    return await this.albumsService.findOne(id);
+    return await this.albumsService.findOne(albumId);
   }
 
+  @ApiOperation({ summary: 'Create album' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: AlbumScheme })
   @Post()
-  @HttpCode(HttpStatus.CREATED)
-  public async create(@Body() newAlbum: CreateAlbumDto) {
-    const albumNew = await this.albumsService.create(newAlbum);
-    return albumNew;
+  @HttpCode(201)
+  public async create(@Body() newAlbum: AlbumScheme) {
+    return await this.albumsService.create(newAlbum);
   }
 
+  @ApiOperation({ summary: 'Delete album by Id' })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
   @Delete(':id')
   @HttpCode(204)
   public async delete(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): Promise<void> {
-    try {
-      await this.favoritesService.deleteOneAlbum(id);
-      await this.tracksService.setNull('albumId', id);
-    } catch {
-      (ex) => console.log(ex);
-    }
+  ) {
     await this.albumsService.delete(id);
   }
 
+  @ApiOperation({ summary: 'Update album by Id' })
+  @ApiResponse({ status: HttpStatus.OK, type: AlbumScheme })
   @Put(':id')
   @HttpCode(200)
   public async update(

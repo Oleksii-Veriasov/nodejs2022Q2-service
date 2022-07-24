@@ -6,7 +6,7 @@ import { AlbumsService } from 'src/albums/albums.service';
 import { ArtistsService } from 'src/artists/artists.service';
 
 @Module({
-  providers: [FavoritesService, TracksService, AlbumsService, ArtistsService],
+  providers: [FavoritesService],
   controllers: [FavoritesController],
 })
 export class FavoritesModule {}

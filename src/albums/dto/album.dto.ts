@@ -1,20 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
-export class UpdateAlbumDto {
+export class AlbumDto {
+  @ApiProperty({
+    description: 'uuid v4',
+    type: String,
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
   @ApiProperty({
     description: 'album name',
     type: String,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   name: string;
 
   @ApiProperty({
-    description: 'album name',
+    description: 'album year',
     type: String,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   year: number;
 
@@ -22,7 +30,6 @@ export class UpdateAlbumDto {
     description: 'refers to Artist',
     type: String,
   })
-  @IsOptional()
-  @IsString()
+  @IsNotEmpty()
   artistId: string | null;
 }
