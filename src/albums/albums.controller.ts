@@ -50,22 +50,22 @@ export class AlbumsController {
 
   @ApiOperation({ summary: 'Delete album by Id' })
   @ApiResponse({ status: HttpStatus.NO_CONTENT })
-  @Delete(':id')
+  @Delete(':albumId')
   @HttpCode(204)
   public async delete(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('albumId', new ParseUUIDPipe({ version: '4' })) albumId: string,
   ) {
-    await this.albumsService.delete(id);
+    await this.albumsService.delete(albumId);
   }
 
   @ApiOperation({ summary: 'Update album by Id' })
   @ApiResponse({ status: HttpStatus.OK, type: AlbumScheme })
-  @Put(':id')
+  @Put(':albumId')
   @HttpCode(200)
   public async update(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Param('albumId', new ParseUUIDPipe({ version: '4' })) albumId: string,
     @Body() newAlbumData: UpdateAlbumDto,
   ) {
-    return await this.albumsService.update(id, newAlbumData);
+    return await this.albumsService.update(albumId, newAlbumData);
   }
 }

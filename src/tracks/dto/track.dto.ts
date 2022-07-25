@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
-export class Track {
+export class TrackDto {
   @ApiProperty({
     description: 'uuid v4',
     type: String,
