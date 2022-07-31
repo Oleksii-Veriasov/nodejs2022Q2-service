@@ -1,72 +1,60 @@
-# Home Library Service
+# Using Docker Compose
 
-## Prerequisites
+Here is the `docker-compose.yml` that powers the whole setup.
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+```yaml
+version: '3.5'
+services:
+  nest-api:
+    container_name: nest-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    volumes:
+      - "../.app:/var/lib/app"
+    env_file:
+      - .env
+    networks:
+      - nest-postgres-network
 
-## Downloading
+  postgres:
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: /postgres/Dockerfile
+    restart: always
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    env_file:     
+      - .env
+    volumes:
+      - "../.postgres:/var/lib/postgresql/data"
+    networks:
+      - nest-postgres-network
 
-```
-git clone {repository URL}
-```
-
-## Installing NPM modules
-
-```
-npm install
-```
-
-## Running application
-
-```
-npm start
-```
-
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
-
-## Testing
-
-After application running open new terminal and enter:
-
-To run all tests without authorization
-
-```
-npm run test
-```
-
-To run only one of all test suites
-
-```
-npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
+volumes:
+  postgres:
+  app: 
+networks:
+  nest-postgres-network:
+    name: nest-postgres-network
+    driver: bridge
 ```
 
-To run only specific test suite with authorization
-
+## Installing docker containers
+Run all containers with comand 
 ```
-npm run test:auth -- <path to suite>
+docker-compose up
 ```
-
-### Auto-fix and format
-
+## Restart docker container with App
 ```
-npm run lint
+docker restart nest-api
 ```
-
+## Restart docker container with Postgres DB
 ```
-npm run format
+docker restart postgres
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
