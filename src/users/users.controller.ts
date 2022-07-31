@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdatePasswordDto } from './dto/update.password.dto';
-import { UserDto } from './dto/user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserScheme } from './schemes/user.scheme';
@@ -67,7 +66,6 @@ export class UsersController {
     @Body() newUserData: UpdatePasswordDto,
   ) {
     const updatedUser = await this.usersService.update(userId, newUserData);
-    console.log(updatedUser);
     return updatedUser;
   }
 }

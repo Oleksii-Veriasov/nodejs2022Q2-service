@@ -1,10 +1,8 @@
-import { Transform } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  Timestamp,
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';

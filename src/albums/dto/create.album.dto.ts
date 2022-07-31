@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { ArtistEntity } from 'src/artists/entities/artist.entity';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateAlbumDto {
   @ApiProperty({

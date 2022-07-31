@@ -10,7 +10,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { AlbumDto } from './dto/album.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateAlbumDto } from 'src/albums/dto/create.album.dto';
 import { UpdateAlbumDto } from 'src/albums/dto/update.album.dto';

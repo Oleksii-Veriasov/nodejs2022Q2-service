@@ -10,12 +10,10 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { TrackDto } from './dto/track.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTrackDto } from './dto/create.track.dto';
 import { UpdateTrackDto } from './dto/update.track.dto';
 import { TracksService } from './tracks.service';
-// import { FavoritesService } from 'src/favorites/favorites.service';
 import { TrackScheme } from './schemas/track.scheme';
 
 @ApiTags('track')
@@ -68,7 +66,6 @@ export class TracksController {
     @Body() newTrackData: UpdateTrackDto,
   ) {
     const updetedTrack = await this.tracksService.update(trackId, newTrackData);
-    console.log(updetedTrack.name);
     return updetedTrack;
   }
 }

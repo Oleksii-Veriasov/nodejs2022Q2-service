@@ -1,6 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AlbumDto } from './dto/album.dto';
-import { v4 as uuidv4 } from 'uuid';
 import { UpdateAlbumDto } from 'src/albums/dto/update.album.dto';
 import { CreateAlbumDto } from 'src/albums/dto/create.album.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -30,9 +28,7 @@ export class AlbumsService {
       year: newAlbum.year,
       artistId: newAlbum.artistId,
     };
-    console.log('album: ', album);
     const createdAlbum = await this.albumRepository.create(album);
-    console.log(createdAlbum);
     return await this.albumRepository.save(createdAlbum);
   }
 

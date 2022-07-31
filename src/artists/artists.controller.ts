@@ -5,19 +5,14 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Inject,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
-import { AlbumsService } from 'src/albums/albums.service';
-import { ArtistDto } from './dto/artist.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateArtistDto } from './dto/create.artist.dto';
 import { UpdateArtistDto } from './dto/update.artist.dto';
-import { FavoritesService } from 'src/favorites/favorites.service';
-import { TracksService } from 'src/tracks/tracks.service';
 import { ArtistsService } from './artists.service';
 import { ArtistScheme } from './schemes/artist.scheme';
 
