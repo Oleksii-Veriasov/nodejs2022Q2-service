@@ -20,11 +20,11 @@ import { ApiTags } from '@nestjs/swagger';
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
-  @Get()
-  @HttpCode(200)
-  public async findAll() {
-    return await this.favoritesService.findAll();
-  }
+  // @Get()
+  // @HttpCode(200)
+  // public async findAll() {
+  //   return await this.favoritesService.findAll();
+  // }
 
   // @Post('/track/:id')
   // @HttpCode(201)

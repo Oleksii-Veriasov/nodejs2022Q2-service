@@ -14,7 +14,7 @@ export class TrackScheme {
   @ApiProperty({
     description: 'refers to Album',
   })
-  albumId: number;
+  albumId: string;
 
   @ApiProperty({
     description: 'refers to Artist',
@@ -24,5 +24,5 @@ export class TrackScheme {
   @ApiProperty({
     description: 'track duration',
   })
-  duration: number;
+  duration: string;
 }

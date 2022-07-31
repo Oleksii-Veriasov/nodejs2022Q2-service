@@ -38,9 +38,9 @@ export class UserEntity {
   updatedAt: Date;
 
   toResponse() {
-    const { id, login, version, createdAt, updatedAt } = this;
-    const created = new Date(createdAt).getTime();
-    const updated = new Date(updatedAt).getTime();
-    return { id, login, version, created, updated };
+    const { id, login, version } = this;
+    const createdAt = new Date(this.createdAt).getTime();
+    const updatedAt = new Date(this.updatedAt).getTime();
+    return { id, login, version, createdAt, updatedAt };
   }
 }

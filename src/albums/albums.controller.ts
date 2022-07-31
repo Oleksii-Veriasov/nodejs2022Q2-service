@@ -44,7 +44,7 @@ export class AlbumsController {
   @ApiResponse({ status: HttpStatus.CREATED, type: AlbumScheme })
   @Post()
   @HttpCode(201)
-  public async create(@Body() newAlbum: AlbumScheme) {
+  public async create(@Body() newAlbum: CreateAlbumDto) {
     return await this.albumsService.create(newAlbum);
   }
 

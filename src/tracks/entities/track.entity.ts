@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AlbumEntity } from '../../albums/entities/album.entity';
+import { ArtistEntity } from '../../artists/entities/artist.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('track')
 export class TrackEntity {
@@ -16,4 +18,23 @@ export class TrackEntity {
 
   @Column()
   duration: number;
+
+  @ManyToOne(() => ArtistEntity, (artist) => artist.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  artist: Promise<ArtistEntity>;
+
+  @ManyToOne(() => AlbumEntity, (album) => album.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  album: Promise<AlbumEntity>;
+
+  toResponse() {
+    const { id, name, artistId, albumId, duration } = this;
+    return { id, name, artistId, albumId, duration };
+  }
 }

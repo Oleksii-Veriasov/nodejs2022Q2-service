@@ -1,6 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
-import { TrackDto } from './dto/track.dto';
 import { CreateTrackDto } from './dto/create.track.dto';
 import { UpdateTrackDto } from './dto/update.track.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,12 +13,13 @@ export class TracksService {
   ) {}
 
   public async findAll() {
-    return await this.trackRepository.find();
+    const tracks = await this.trackRepository.find();
+    return tracks.map((track) => track.toResponse());
   }
 
   public async findOne(trackId: string) {
     const track = await this.trackRepository.findOneBy({ id: trackId });
-    if (track) return track;
+    if (track) return track.toResponse();
     throw new NotFoundException(`Track with id ${trackId} doesn't exist`);
   }
 
@@ -32,7 +31,8 @@ export class TracksService {
       duration: newTrack.duration,
     };
     const createTrack = await this.trackRepository.create(track);
-    return await this.trackRepository.save(createTrack);
+    console.log(createTrack);
+    return (await this.trackRepository.save(createTrack)).toResponse();
   }
 
   public async update(trackId: string, newTrackData: UpdateTrackDto) {
@@ -40,8 +40,10 @@ export class TracksService {
     if (!updateTrack) {
       throw new NotFoundException(`Track with id ${trackId} doesn't exist`);
     }
-    Object.assign(updateTrack, newTrackData);
-    return await this.trackRepository.save(updateTrack);
+    await Object.assign(updateTrack, newTrackData);
+    const updatedTrack = await this.trackRepository.save(updateTrack);
+    console.log(updatedTrack);
+    return updatedTrack.toResponse();
   }
 
   public async delete(trackId: string) {
@@ -51,15 +53,4 @@ export class TracksService {
       throw new NotFoundException(`Track with id ${trackId} was not found`);
     }
   }
-
-  // public async setNullArtistId(id: string): Promise<void> {
-  //   await this.tracks.forEach((track) => {
-  //     track.artistId === id ? (track.artistId = null) : null;
-  //   });
-  // }
-  // public async setNullAlbumId(id: string): Promise<void> {
-  //   await this.tracks.forEach((track) => {
-  //     track.albumId === id ? (track.albumId = null) : null;
-  //   });
-  // }
 }

@@ -11,9 +11,9 @@ export class FavoritesService {
     private favoriteRepository: Repository<FavoriteEntity>,
   ) {}
 
-  public async findAll() {
-    return await this.favoriteRepository.find();
-  }
+  // public async findAllAlbums(relations: [album]) {
+  //   return await this.favoriteRepository.find();
+  // }
 
   // public crateOneTrack(id: string): void {
   //   this.favorites.tracks.push(id);

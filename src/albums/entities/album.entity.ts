@@ -1,8 +1,10 @@
+import { ArtistEntity } from '../../artists/entities/artist.entity';
+import { TrackEntity } from '../../tracks/entities/track.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
-  OneToOne,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -11,7 +13,7 @@ export class AlbumEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
+  @Column()
   name: string;
 
   @Column({ nullable: true })
@@ -19,8 +21,14 @@ export class AlbumEntity {
 
   @Column({ nullable: true })
   artistId: string;
-}
 
-// @OneToOne(() => ArtistEntity)
-// @JoinColumn()
-// artistId: ArtistEntity;
+  @ManyToOne(() => ArtistEntity, (artist) => artist.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+    cascade: ['insert', 'update', 'remove'],
+  })
+  artist: Promise<ArtistEntity>;
+
+  @OneToMany(() => TrackEntity, (track) => track.artistId)
+  tracks: Promise<TrackEntity[]>;
+}

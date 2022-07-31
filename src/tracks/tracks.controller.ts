@@ -67,6 +67,8 @@ export class TracksController {
     @Param('trackId', new ParseUUIDPipe({ version: '4' })) trackId: string,
     @Body() newTrackData: UpdateTrackDto,
   ) {
-    return await this.tracksService.update(trackId, newTrackData);
+    const updetedTrack = await this.tracksService.update(trackId, newTrackData);
+    console.log(updetedTrack.name);
+    return updetedTrack;
   }
 }

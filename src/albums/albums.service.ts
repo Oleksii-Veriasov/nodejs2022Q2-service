@@ -30,7 +30,9 @@ export class AlbumsService {
       year: newAlbum.year,
       artistId: newAlbum.artistId,
     };
+    console.log('album: ', album);
     const createdAlbum = await this.albumRepository.create(album);
+    console.log(createdAlbum);
     return await this.albumRepository.save(createdAlbum);
   }
 
@@ -49,10 +51,4 @@ export class AlbumsService {
       throw new NotFoundException(`Album with id ${albumId} was not found`);
     }
   }
-
-  // public async setNullArtistId(id: string): Promise<void> {
-  //   await this.albums.forEach((album) => {
-  //     album.artistId === id ? (album.artistId = null) : null;
-  //   });
-  // }
 }
