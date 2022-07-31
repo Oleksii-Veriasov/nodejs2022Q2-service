@@ -1,18 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsArray } from 'class-validator';
 
 export class Favorite {
   @ApiProperty({
     description: 'favorite artists ids',
     type: Array,
   })
-  @IsNotEmpty()
   @IsArray()
   artists: Array<string>;
 
@@ -20,7 +13,6 @@ export class Favorite {
     description: 'favorite albums ids',
     type: Array,
   })
-  @IsNotEmpty()
   @IsArray()
   albums: Array<string>;
 
@@ -28,7 +20,6 @@ export class Favorite {
     description: 'favorite tracks ids',
     type: Array,
   })
-  @IsNotEmpty()
   @IsArray()
   tracks: Array<string>;
 }

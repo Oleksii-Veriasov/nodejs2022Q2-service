@@ -19,28 +19,24 @@ export class TracksService {
   }
 
   public async findOne(trackId: string) {
-    const track = await this.trackRepository.findOne({
-      where: { id: trackId },
-    });
+    const track = await this.trackRepository.findOneBy({ id: trackId });
     if (track) return track;
     throw new NotFoundException(`Track with id ${trackId} doesn't exist`);
   }
 
   public async create(newTrack: CreateTrackDto) {
     const track = {
-      id: uuidv4(),
       name: newTrack.name,
       artistId: newTrack.artistId,
       albumId: newTrack.albumId,
       duration: newTrack.duration,
     };
-    return await this.trackRepository.create(track);
+    const createTrack = await this.trackRepository.create(track);
+    return await this.trackRepository.save(createTrack);
   }
 
   public async update(trackId: string, newTrackData: UpdateTrackDto) {
-    const updateTrack = await this.trackRepository.findOne({
-      where: { id: trackId },
-    });
+    const updateTrack = await this.trackRepository.findOneBy({ id: trackId });
     if (!updateTrack) {
       throw new NotFoundException(`Track with id ${trackId} doesn't exist`);
     }
@@ -50,6 +46,7 @@ export class TracksService {
 
   public async delete(trackId: string) {
     const result = await this.trackRepository.delete(trackId);
+    console.log('result.affected', result.affected);
     if (result.affected === 0) {
       throw new NotFoundException(`Track with id ${trackId} was not found`);
     }

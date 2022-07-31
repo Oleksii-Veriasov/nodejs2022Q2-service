@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AlbumDto } from './dto/album.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateAlbumDto } from 'src/dto/create.album.dto';
+import { CreateAlbumDto } from 'src/albums/dto/create.album.dto';
 import { UpdateAlbumDto } from 'src/albums/dto/update.album.dto';
 import { AlbumsService } from './albums.service';
 import { AlbumScheme } from './schemes/album.scheme';

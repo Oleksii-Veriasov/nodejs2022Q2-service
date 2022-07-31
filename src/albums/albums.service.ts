@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { AlbumDto } from './dto/album.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { UpdateAlbumDto } from 'src/albums/dto/update.album.dto';
-import { CreateAlbumDto } from 'src/dto/create.album.dto';
+import { CreateAlbumDto } from 'src/albums/dto/create.album.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AlbumEntity } from './entities/album.entity';
@@ -19,27 +19,23 @@ export class AlbumsService {
   }
 
   public async findOne(albumId: string) {
-    const album = await this.albumRepository.findOne({
-      where: { id: albumId },
-    });
+    const album = await this.albumRepository.findOneBy({ id: albumId });
     if (album) return album;
     throw new NotFoundException(`Album with id ${albumId} doesn't exist`);
   }
 
   public async create(newAlbum: CreateAlbumDto) {
     const album = {
-      id: uuidv4(),
       name: newAlbum.name,
       year: newAlbum.year,
       artistId: newAlbum.artistId,
     };
-    return await this.albumRepository.create(album);
+    const createdAlbum = await this.albumRepository.create(album);
+    return await this.albumRepository.save(createdAlbum);
   }
 
   public async update(albumId: string, newAlbumData: UpdateAlbumDto) {
-    const updatedAlbum = await this.albumRepository.findOne({
-      where: { id: albumId },
-    });
+    const updatedAlbum = await this.albumRepository.findOneBy({ id: albumId });
     if (!updatedAlbum) {
       throw new NotFoundException(`Album with id ${albumId} doesn't exist`);
     }

@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Transform } from 'class-transformer';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Timestamp,
+  UpdateDateColumn,
+  VersionColumn,
+} from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
@@ -11,17 +20,27 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column()
+  @VersionColumn()
   version: number;
 
-  @Column()
-  createdAt: number;
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 
-  @Column()
-  updatedAt: number;
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 
   toResponse() {
     const { id, login, version, createdAt, updatedAt } = this;
-    return { id, login, version, createdAt, updatedAt };
+    const created = new Date(createdAt).getTime();
+    const updated = new Date(updatedAt).getTime();
+    return { id, login, version, created, updated };
   }
 }

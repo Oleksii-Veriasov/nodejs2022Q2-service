@@ -39,7 +39,7 @@ export class UserDto {
     type: Number,
   })
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   createdAt: number;
 
   @ApiProperty({

@@ -8,7 +8,6 @@ import { CreateUserDto } from './dto/create.user.dto';
 import { UpdatePasswordDto } from './dto/update.password.dto';
 import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
-import { v4 as uuidv4 } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -34,12 +33,8 @@ export class UsersService {
 
   public async create(newUser: CreateUserDto) {
     const user = {
-      id: uuidv4(),
       login: newUser.login,
       password: newUser.password,
-      version: 1,
-      createdAt: +Date.now(),
-      updatedAt: +Date.now(),
     };
     const createUser = await this.userRepository.create(user);
     return (await this.userRepository.save(createUser)).toResponse();
