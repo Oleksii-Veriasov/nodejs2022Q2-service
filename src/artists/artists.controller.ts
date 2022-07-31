@@ -48,7 +48,7 @@ export class ArtistsController {
   @ApiResponse({ status: HttpStatus.CREATED, type: ArtistScheme })
   @Post()
   @HttpCode(201)
-  public async create(@Body() newArtist) {
+  public async create(@Body() newArtist: CreateArtistDto) {
     return await this.artistsService.create(newArtist);
   }
 
