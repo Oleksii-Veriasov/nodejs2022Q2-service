@@ -1,5 +1,21 @@
 # Using Docker Compose
+create .env
+```
+"PORT=4000
 
+POSTGRES_USER=root
+POSTGRES_PASSWORD=root
+POSTGRES_DB=postgres
+POSTGRES_PORT=5432
+POSTGRES_HOST=localhost
+
+CRYPT_SALT=10
+JWT_SECRET_KEY=secret123123
+JWT_SECRET_REFRESH_KEY=secret123123
+TOKEN_EXPIRE_TIME=1h
+TOKEN_REFRESH_EXPIRE_TIME=24h
+"
+```
 Here is the `docker-compose.yml` that powers the whole setup.
 
 ```yaml
